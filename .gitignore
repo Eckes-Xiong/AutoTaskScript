@@ -10,5 +10,6 @@ source
 docs
 package-lock.json
 utils/ipCache.json
+.history/
 img
 reverts.sh
