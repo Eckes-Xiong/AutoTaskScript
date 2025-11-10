@@ -1,21 +1,12 @@
 import axios from "axios";
-import env from "./env";
-
-interface NotificationOptions {
-  title: string;
-  content: string;
-  msgtype?: "text" | "html";
-}
-
-interface PushPlusOptions extends NotificationOptions {}
 
 export class NotificationKit {
   /**
    * PushPlus推送
    * @param options
    */
-  async pushplus(options: PushPlusOptions) {
-    const token: string | unknown = env.PUSHPLUS_TOKEN;
+  async pushplus(options) {
+    const token = "a1dfe7a5c3b94a82a4f8e51dd874dbce";
     if (!token || token === "") {
       throw new Error("未配置PushPlus Token。");
     }
@@ -38,12 +29,12 @@ export class NotificationKit {
       }
     });
   }
-  async pushMessage(options: NotificationOptions) {
-    const trycatch = async (name: string, fn: Function) => {
+  async pushMessage(options) {
+    const trycatch = async (name, fn) => {
       try {
         await fn(options);
         console.log(`[${name}]: 消息推送成功!`);
-      } catch (e: any) {
+      } catch (e) {
         console.log(`[${name}]: 消息推送失败! 原因: ${e.message}`);
       }
     };
@@ -51,5 +42,5 @@ export class NotificationKit {
     await trycatch("PushPlus", this.pushplus.bind(this));
   }
 }
-
-export default new NotificationKit();
+const notify = new NotificationKit();
+export default notify
