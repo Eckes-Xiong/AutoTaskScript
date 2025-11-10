@@ -1,4 +1,4 @@
-name: tieba
+name: miyoushe
 
 on:
   workflow_dispatch:
