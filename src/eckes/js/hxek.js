@@ -11,7 +11,7 @@
  * 抓包    hope.demogic.com  域名下的body    , 找到 openid 、 memberId 、 unionid 即可
  * 
  * 定时一天一次    ck有效期不明
- * 
+ * const hongck = "oXpsg5bZvu8O37NoT5wyzSh12AyI&ff8080819704f28e01970b97b46d52ca&o36lGwBthNfk7sb3LSUrI4z"
  * ====================================
  */
 
