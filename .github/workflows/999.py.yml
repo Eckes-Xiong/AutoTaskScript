@@ -26,7 +26,13 @@ jobs:
           cache: 'pip'
           # 指定依赖文件路径（确保缓存能正确关联依赖变动）
           cache-dependency-path: 'src/eckes/python/requirements.txt'
-
+          
+      # 新增：配置 OpenSSL 允许旧版协商
+      - name: 配置 OpenSSL 支持旧版 SSL 协商
+        run: |
+          echo -e "[openssl_init]\nssl_conf = ssl_sect\n[ssl_sect]\nsystem_default = system_default_sect\n[system_default_sect]\nOptions = UnsafeLegacyRenegotiation" | sudo tee /etc/ssl/openssl.cnf.d/allow-legacy-renegotiation.cnf
+          sudo update-ca-certificates
+          
       # 手动缓存 pip 依赖（作为官方缓存的补充，可选）
       - name: 缓存 pip 依赖
         uses: actions/cache@v3
