@@ -1,8 +1,8 @@
-name: 运行 999.py 脚本（带缓存）
+name: 999.py
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 每天 UTC 0 点运行
+    - cron: '1 0 * * *'  # 每天 北京时间 8点1
   workflow_dispatch:
     inputs:
       testMode:
