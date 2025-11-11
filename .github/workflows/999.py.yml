@@ -22,57 +22,109 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.8'
-          # 启用 pip 缓存（官方推荐方式，自动识别依赖文件）
           cache: 'pip'
-          # 指定依赖文件路径（确保缓存能正确关联依赖变动）
           cache-dependency-path: 'src/eckes/python/requirements.txt'
           
-      # 新增：配置 OpenSSL 允许旧版协商
-      - name: 配置 OpenSSL 允许旧版协商
+      # 新增：设置全局环境变量绕过 SSL 验证
+      - name: 配置 SSL 绕过设置
         run: |
-          # 先创建目录（如果不存在）
-          sudo mkdir -p /etc/ssl/openssl.cnf.d/
-          # 写入配置文件
-          echo -e "[openssl_init]\nssl_conf = ssl_sect\n[ssl_sect]\nsystem_default = system_default_sect\n[system_default_sect]\nOptions = UnsafeLegacyRenegotiation" | sudo tee /etc/ssl/openssl.cnf.d/allow-legacy-renegotiation.cnf
-          # 刷新配置
-          sudo update-ca-certificates
-      # 手动缓存 pip 依赖（作为官方缓存的补充，可选）
+          # 设置 Python 不验证 SSL
+          echo "PYTHONWARNINGS=ignore:Unverified HTTPS request" >> $GITHUB_ENV
+          echo "CURL_CA_BUNDLE=" >> $GITHUB_ENV
+          echo "REQUESTS_CA_BUNDLE=" >> $GITHUB_ENV
+          echo "SSL_CERT_FILE=" >> $GITHUB_ENV
+
       - name: 缓存 pip 依赖
         uses: actions/cache@v3
         with:
           path: |
             ~/.cache/pip
             **/__pycache__
-          # 缓存键：系统 + Python 版本 + 依赖文件哈希（确保依赖变动时更新缓存）
           key: ${{ runner.os }}-pip-${{ hashFiles('src/eckes/python/requirements.txt') }}
-          # 缓存恢复键：当精确匹配失败时，使用最近的缓存
           restore-keys: |
             ${{ runner.os }}-pip-
 
       - name: 安装依赖
         run: |
           if [ -f "src/eckes/python/requirements.txt" ]; then
-            pip install -r src/eckes/python/requirements.txt
+            # 安装时临时禁用 SSL 验证
+            pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org -r src/eckes/python/requirements.txt
           else
             echo "无依赖文件，跳过安装"
           fi
 
-      # （可选）缓存脚本可能生成的临时文件（如数据缓存）
       - name: 缓存脚本临时文件
         uses: actions/cache@v3
         with:
-          # 根据脚本实际生成的临时文件路径调整（示例路径）
           path: src/eckes/python/cache/
-          key: ${{ runner.os }}-script-cache-${{ github.sha }}  # 按提交哈希缓存
+          key: ${{ runner.os }}-script-cache-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-script-cache-
+
+      - name: 创建 SSL 绕过补丁文件
+        run: |
+          cd src/eckes/python/
+          # 创建补丁脚本
+          cat > ssl_patch.py << 'EOF'
+          import ssl
+          import urllib3
+          import requests
+          from requests.adapters import HTTPAdapter
+          
+          # 禁用 SSL 警告
+          urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+          
+          # 创建自定义 SSL 上下文
+          class CustomHTTPAdapter(HTTPAdapter):
+              def __init__(self, ssl_context=None, **kwargs):
+                  self.ssl_context = ssl_context
+                  super().__init__(**kwargs)
+              
+              def init_poolmanager(self, *args, **kwargs):
+                  if self.ssl_context:
+                      kwargs['ssl_context'] = self.ssl_context
+                  return super().init_poolmanager(*args, **kwargs)
+          
+          # 创建不验证 SSL 的上下文
+          ssl_context = ssl.create_default_context()
+          ssl_context.check_hostname = False
+          ssl_context.verify_mode = ssl.CERT_NONE
+          
+          # 创建全局 session
+          session = requests.Session()
+          adapter = CustomHTTPAdapter(ssl_context=ssl_context)
+          session.mount('https://', adapter)
+          session.mount('http://', adapter)
+          
+          # 替换默认的 requests 方法
+          original_get = requests.get
+          original_post = requests.post
+          
+          def patched_get(url, **kwargs):
+              kwargs.setdefault('verify', False)
+              return original_get(url, **kwargs)
+          
+          def patched_post(url, **kwargs):
+              kwargs.setdefault('verify', False)
+              return original_post(url, **kwargs)
+          
+          requests.get = patched_get
+          requests.post = patched_post
+          
+          print("SSL 补丁已应用：已禁用 SSL 验证")
+          EOF
 
       - name: 执行 999.py
         run: |
           cd src/eckes/python/
-          python 999.py
+          # 先运行 SSL 补丁，然后运行主脚本
+          python -c "import ssl_patch; exec(open('999.py').read())"
         env:
           TEST_MODE: ${{ github.event.inputs.testMode }}
+          # 设置环境变量确保 SSL 验证被禁用
+          PYTHONHTTPSVERIFY: 0
+          CURL_CA_BUNDLE: ""
+          REQUESTS_CA_BUNDLE: ""
 
       - name: 保存运行日志
         if: always()
