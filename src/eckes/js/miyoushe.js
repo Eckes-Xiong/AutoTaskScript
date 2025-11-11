@@ -68,9 +68,9 @@ async function mihoyo_sign(i) {
       } else {
         data = JSON.parse(data);
         if (data.message === "OK") {
-          send_str += `${i+1}:🎉。`
+          send_str += `${i+1}:成功。`
         } else {
-          send_str += `${i+1}:❎。`
+          send_str += `${i+1}:失败。`
           title_str += `${i+1}x;`
         }
         resolve();
