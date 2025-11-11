@@ -8,7 +8,7 @@ on:
       testMode:
         description: '是否启用测试模式'
         required: false
-        default: 'false'
+        default: 'true'
         type: boolean
 
 jobs:
