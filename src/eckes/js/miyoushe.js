@@ -73,6 +73,7 @@ async function mihoyo_sign(i) {
           send_str += `${i+1}:❎。`
           title_str += `${i+1}x;`
         }
+        resolve();
       }
     } catch (e) {
       send_str += `${i+1}:✖。`
@@ -90,10 +91,10 @@ for(let i=0; i<hs.length; i++){
     mihoyo_sign(i)
 }
 
-if(send_str){
+setTimeout(() => {
   notification.pushMessage({
     title: "原神签到" + title_str,
     content: send_str,
     msgtype: "text"
   });
-}
+}, 40);
