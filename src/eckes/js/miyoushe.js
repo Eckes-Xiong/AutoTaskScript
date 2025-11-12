@@ -94,7 +94,7 @@ for(let i=0; i<hs.length; i++){
 setTimeout(() => {
   notification.pushMessage({
     title: "原神签到" + title_str,
-    content: send_str,
+    content: "结果:"+send_str,
     msgtype: "text"
   });
 }, 40);
