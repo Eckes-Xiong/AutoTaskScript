@@ -21,7 +21,7 @@ jobs:
       - name: 配置 Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.8'
           # 启用 pip 缓存（官方推荐方式，自动识别依赖文件）
           cache: 'pip'
           # 指定依赖文件路径（确保缓存能正确关联依赖变动）
