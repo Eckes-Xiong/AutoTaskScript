@@ -72,7 +72,7 @@ for i in range(len(ydwx_deviceParams)):
     # data = f'mallNo=20028&appId=68a91a5bac6a4f3e91bf4b42856785c6&platform=h5&imei=E94B93FA-F46A-4B72-9AA2-626D2BBB6908&appVersion=3.64.0&osVersion=17.4&action=mixc.app.memberSign.sign&apiVersion=1.0&timestamp={timestamp}&deviceParams={ydwx_deviceParams[i]}&token={ydwx_token[i]}&params=eyJtYWxsTm8iOiIyMDAyOCJ9&sign={sign}'
     data = f'mallNo=20014&appId=68a91a5bac6a4f3e91bf4b42856785c6&platform=h5&imei=2333&appVersion=3.53.0&osVersion=12.0.1&action=mixc.app.memberSign.sign&apiVersion=1.0&timestamp={timestamp}&deviceParams={ydwx_deviceParams[i]}&token={ydwx_token[i]}&params=eyJtYWxsTm8iOiIyMDAxNCJ9&sign={sign}'
     html = requests.post(url=url, headers=headers, data=data)
-    print(f'帐号{i+1}签到结果:' + html);
+    print(html);
     result = f'帐号{i+1}签到结果:' + json.loads(html.text)['message']
     lastMsg = json.loads(html.text)['message']
     print(json.loads(html.text))
