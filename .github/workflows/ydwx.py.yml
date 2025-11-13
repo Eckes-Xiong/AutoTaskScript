@@ -1,0 +1,73 @@
+name: 一点万象ydwx.py
+
+on:
+  schedule:
+    - cron: '11 23 * * *'  # (+8)北京时间7:11
+  workflow_dispatch:
+    inputs:
+      testMode:
+        description: '是否启用测试模式'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  run-python-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取仓库代码
+        uses: actions/checkout@v4
+
+      - name: 配置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          # 启用 pip 缓存（官方推荐方式，自动识别依赖文件）
+          cache: 'pip'
+          # 指定依赖文件路径（确保缓存能正确关联依赖变动）
+          cache-dependency-path: 'src/eckes/python/requirements.txt'
+
+      # 手动缓存 pip 依赖（作为官方缓存的补充，可选）
+      - name: 缓存 pip 依赖
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+            **/__pycache__
+          # 缓存键：系统 + Python 版本 + 依赖文件哈希（确保依赖变动时更新缓存）
+          key: ${{ runner.os }}-pip-${{ hashFiles('src/eckes/python/requirements.txt') }}
+          # 缓存恢复键：当精确匹配失败时，使用最近的缓存
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: 安装依赖
+        run: |
+          if [ -f "src/eckes/python/requirements.txt" ]; then
+            pip install -r src/eckes/python/requirements.txt
+          else
+            echo "无依赖文件，跳过安装"
+          fi
+
+      # （可选）缓存脚本可能生成的临时文件（如数据缓存）
+      - name: 缓存脚本临时文件
+        uses: actions/cache@v3
+        with:
+          # 根据脚本实际生成的临时文件路径调整（示例路径）
+          path: src/eckes/python/cache/
+          key: ${{ runner.os }}-script-cache-${{ github.sha }}  # 按提交哈希缓存
+          restore-keys: |
+            ${{ runner.os }}-script-cache-
+
+      - name: 执行
+        run: |
+          cd src/eckes/python/
+          python ydwx.py
+        env:
+          TEST_MODE: ${{ github.event.inputs.testMode }}
+
+      - name: 保存运行日志
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ydwx-py-run-logs
+          path: src/eckes/python/output.log
