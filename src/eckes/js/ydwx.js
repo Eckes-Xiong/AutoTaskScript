@@ -2,11 +2,19 @@
 import crypto from 'crypto';
 import notification from "../utils/notification-kit.js";
 
-// 配置信息
-const ydwx_deviceParams = [
-  "eyJwaG9uZSI6IjE4OTYzNDM5NTUzIiwiZGV2aWNlIjoiaVBob25lOSwxIiwiZGV2aWNlSWQiOiJCVG5HUlZcL1pTT08ybVFyblFUWmR6Q2tET0tna3o0N0t1bHl1V1BcL1FGRmlzNWdEZW9SdHYybWw2RGdtd0RCYldYMFhRSDk2eGZkazhVVEdNV0x6XC8zalE9PSIsImRldmljZU5hbWUiOiJpUGhvbmUgKDIpIn0="
-];
-const ydwx_token = ["f0eafd0624b345a38aa25b59abd27970"];
+// # 7553
+// # angel
+// # 9553
+const ydwx_deviceParams=[
+    "eyJwaG9uZSI6IjE4OTA4Njg3NTUzIiwiZGV2aWNlIjoiaVBob25lMTUsNCIsImRldmljZUlkIjoiQkdXS1JvcHk5c1cxUkl6anhoNUdESjhCcDJpRE54bzI0YU5SWEdmUHBobkNnWEtLM1gyRlwvNk50V2ViSlFqeUcrZGc1V0VnWWhZazdsQTVCclB1VWtDdz09IiwibG9jYXRpb24iOnsiZ3BzTG9uZ2l0dWRlIjoiMTE0LjIwMDEiLCJncHNMYXRpdHVkZSI6IjMwLjU1MDMifSwiZGV2aWNlTmFtZSI6ImlQaG9uZSJ9",
+    "eyJwaG9uZSI6IjE4Njc0MDA5ODY4IiwiZGV2aWNlIjoiaVBob25lMTYsMSIsImRldmljZUlkIjoiQkFcL2U5em13cXpvdng4WkJJZHJzMVpFMWh5eE9EUm1PM2txSFRnSFNNdldRVlB1T0l3S0pGQlltTVwvWng5NFwvNzNjUmxDdHBCc0xzS3hrWnBCeHVjTlwvUT09IiwibG9jYXRpb24iOnsiZ3BzTG9uZ2l0dWRlIjoiMTE0LjIwMDEiLCJncHNMYXRpdHVkZSI6IjMwLjU1MDMifSwiZGV2aWNlTmFtZSI6ImlQaG9uZSJ9",
+    "eyJwaG9uZSI6IjE4OTYzNDM5NTUzIiwiZGV2aWNlIjoiaVBob25lOSwxIiwiZGV2aWNlSWQiOiJCVG5HUlZcL1pTT08ybVFyblFUWmR6Q2tET0tna3o0N0t1bHl1V1BcL1FGRmlzNWdEZW9SdHYybWw2RGdtd0RCYldYMFhRSDk2eGZkazhVVEdNV0x6XC8zalE9PSIsImRldmljZU5hbWUiOiJpUGhvbmUgKDIpIn0="
+]
+const ydwx_token=[
+    "7f0e71b32c29464aa8666f9db6087474",
+    "eb50fb3c16fb4a9fa389308744343c9b",
+    "f0eafd0624b345a38aa25b59abd27970"
+]
 
 // 生成签名
 function generateSign(deviceParams, token, timestamp) {
