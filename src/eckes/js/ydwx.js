@@ -68,7 +68,7 @@ async function signAccount(deviceParams, token, index) {
       clearTimeout(timeoutId);
 
       console.log(`状态码: ${response.status}`);
-      console.log(response.status);
+      console.log(response);
 
       if (response.status === 200) {
         const result = await response.json();
