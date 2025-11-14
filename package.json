@@ -33,6 +33,7 @@
     "got": "^11.8.6",
     "http-proxy-agent": "^7.0.2",
     "http-server": "^0.12.3",
+    "https": "^1.0.0",
     "https-proxy-agent": "^7.0.6",
     "jieba": "^1.0.0",
     "js-base64": "^3.7.8",

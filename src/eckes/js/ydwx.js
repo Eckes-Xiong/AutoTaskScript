@@ -1,5 +1,6 @@
 // ydwx_fetch.js
 import axios from 'axios';
+import https from 'https';
 import crypto from 'crypto';
 import notification from "../utils/notification-kit.js";
 
@@ -17,50 +18,36 @@ const ydwx_token=[
     "f0eafd0624b345a38aa25b59abd27970"
 ]
 
-// 创建axios实例（解决跨域和连接问题）
+// 创建axios实例
 function createAxiosInstance() {
-    // 创建自定义https agent
-    // const httpsAgent = new https.Agent({
-    //     keepAlive: true,
-    //     keepAliveMsecs: 60000,
-    //     timeout: 45000,
-    //     rejectUnauthorized: false, // 忽略证书验证，解决TLS问题
-    //     secureProtocol: 'TLSv1_2_method',
-    //     // 解决SNI问题
-    //     servername: 'app.mixcapp.com'
-    // });
+    const httpsAgent = new https.Agent({
+        keepAlive: true,
+        keepAliveMsecs: 30000,
+        timeout: 45000,
+        rejectUnauthorized: true, // 证书验证通过，可以设为true
+        secureProtocol: 'TLSv1_2_method'
+    });
 
     return axios.create({
         baseURL: 'https://app.mixcapp.com',
         timeout: 45000,
-        maxRedirects: 0,
-        // httpsAgent: httpsAgent,
-        // 解决跨域相关配置
-        withCredentials: false,
+        httpsAgent: httpsAgent,
         headers: {
             'Host': 'app.mixcapp.com',
             'Connection': 'keep-alive',
             'Accept': 'application/json, text/plain, */*',
             'Origin': 'https://app.mixcapp.com',
             'User-Agent': 'Mozilla/5.0 (Linux; Android 10; PCAM00 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.92 Mobile Safari/537.36/MIXCAPP/3.42.2/AnalysysAgent/Hybrid',
-            'Sec-Fetch-Mode': 'cors',
             'Content-Type': 'application/x-www-form-urlencoded',
             'X-Requested-With': 'com.crland.mixc',
-            'Sec-Fetch-Site': 'same-origin',
-            'Referer': 'https://app.mixcapp.com/m/m-20014/signIn?showWebNavigation=true&timestamp=' + Date.now() + '&appVersion=3.53.0&mallNo=20014',
+            'Referer': 'https://app.mixcapp.com/m/m-20014/signIn?showWebNavigation=true&appVersion=3.53.0&mallNo=20014',
             'Accept-Encoding': 'gzip, deflate',
-            'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-            // 添加CORS相关头
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With'
+            'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7'
         },
-        // 请求拦截器
-        transformRequest: [(data, headers) => {
-            // 确保Content-Type正确
-            headers['Content-Type'] = 'application/x-www-form-urlencoded';
-            return data;
-        }]
+        // 重要：设置验证状态，不抛出HTTP错误
+        validateStatus: function (status) {
+            return status >= 200 && status < 500; // 接受200-499的状态码
+        }
     });
 }
 
@@ -73,19 +60,17 @@ function generateSign(deviceParams, token, timestamp) {
 // 睡眠函数
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-// 处理跨域预检请求
-async function handleCORS(instance) {
+// 测试服务器连通性
+async function testServerConnectivity(instance) {
     try {
-        // 先发送OPTIONS预检请求（如果需要）
-        await instance.options('/mixc/gateway', {
-            headers: {
-                'Access-Control-Request-Method': 'POST',
-                'Access-Control-Request-Headers': 'Content-Type, X-Requested-With'
-            }
-        });
+        console.log('测试服务器连通性...');
+        // 测试OPTIONS方法
+        const optionsResponse = await instance.options('/mixc/gateway');
+        console.log(`OPTIONS请求状态: ${optionsResponse.status}`);
+        return true;
     } catch (error) {
-        // OPTIONS请求失败是正常的，继续执行
-        console.log('OPTIONS请求忽略:', error.message);
+        console.log('OPTIONS请求失败，继续尝试POST请求:', error.message);
+        return true; // 即使OPTIONS失败也继续
     }
 }
 
@@ -97,99 +82,75 @@ async function signAccount(deviceParams, token, index) {
     
     const data = `mallNo=20014&appId=68a91a5bac6a4f3e91bf4b42856785c6&platform=h5&imei=2333&appVersion=3.53.0&osVersion=12.0.1&action=mixc.app.memberSign.sign&apiVersion=1.0&timestamp=${timestamp}&deviceParams=${deviceParams}&token=${token}&params=eyJtYWxsTm8iOiIyMDAxNCJ9&sign=${sign}`;
 
-    console.log(`账号${index + 1} 开始签到...`);
-    console.log(`请求数据长度: ${data.length}`);
+    console.log(`\n账号${index + 1} 开始签到...`);
+    console.log(`Timestamp: ${timestamp}`);
+    console.log(`Sign: ${sign}`);
 
-    // 重试机制
     for (let retry = 0; retry < 3; retry++) {
         try {
             console.log(`第${retry + 1}次尝试...`);
 
-            // 处理CORS预检（如果需要）
-            await handleCORS(instance);
+            // 更新Referer时间戳
+            const currentHeaders = {
+                ...instance.defaults.headers.common,
+                'Content-Length': Buffer.byteLength(data).toString(),
+                'Referer': `https://app.mixcapp.com/m/m-20014/signIn?showWebNavigation=true&timestamp=${timestamp}&appVersion=3.53.0&mallNo=20014`
+            };
 
             const response = await instance.post('/mixc/gateway', data, {
-                // 为每个请求单独设置headers
-                headers: {
-                    'Content-Length': Buffer.byteLength(data).toString(),
-                    'Referer': `https://app.mixcapp.com/m/m-20014/signIn?showWebNavigation=true&timestamp=${Date.now()}&appVersion=3.53.0&mallNo=20014`
-                },
-                // 请求配置
-                maxContentLength: Infinity,
-                maxBodyLength: Infinity,
-                validateStatus: function (status) {
-                    // 接受所有状态码，不抛出错误
-                    return true;
-                }
+                headers: currentHeaders
             });
 
-            console.log(`状态码: ${response.status}`);
-            console.log(`响应头: ${JSON.stringify(response.headers)}`);
-
+            console.log(`HTTP状态码: ${response.status}`);
+            
             if (response.status === 200) {
                 const result = response.data;
-                const message = result.message || '未知结果';
-                console.log(`账号${index + 1} 响应:`, JSON.stringify(result));
-                return `帐号${index + 1}签到结果: ${message}`;
+                console.log('响应数据:', JSON.stringify(result, null, 2));
+                
+                if (result && typeof result === 'object') {
+                    const message = result.message || result.msg || '未知结果';
+                    const code = result.code || result.status;
+                    
+                    if (code === 200 || code === '200' || message.includes('成功')) {
+                        return `帐号${index + 1}签到结果: ${message}`;
+                    } else {
+                        return `帐号${index + 1}签到失败: ${message} (代码: ${code})`;
+                    }
+                } else {
+                    return `帐号${index + 1}签到结果: 响应格式异常`;
+                }
             } else if (response.status === 405) {
-                console.log(`账号${index + 1} 405错误，请求方法不被允许`);
-                if (retry < 2) {
-                    await sleep(5000);
-                    continue;
+                console.log('405错误: 方法不被允许，可能是请求头问题');
+                // 尝试调整请求头
+                if (retry === 1) {
+                    delete instance.defaults.headers.common['X-Requested-With'];
                 }
-                return `帐号${index + 1}签到失败: HTTP 405 方法不被允许`;
-            } else if (response.status === 404) {
-                console.log(`账号${index + 1} 404错误，接口不存在`);
-                return `帐号${index + 1}签到失败: HTTP 404 接口不存在`;
-            } else if (response.status >= 500) {
-                console.log(`账号${index + 1} 服务器错误: ${response.status}`);
-                if (retry < 2) {
-                    await sleep(8000);
-                    continue;
-                }
-                return `帐号${index + 1}签到失败: 服务器错误 ${response.status}`;
+                await sleep(5000);
+                continue;
             } else {
-                console.log(`账号${index + 1} HTTP错误: ${response.status}`);
+                console.log(`HTTP ${response.status} 错误`);
                 return `帐号${index + 1}签到失败: HTTP ${response.status}`;
             }
 
         } catch (error) {
-            console.log(`账号${index + 1} 第${retry + 1}次尝试失败:`, error.message);
+            console.log(`第${retry + 1}次尝试失败:`, error.message);
             
-            // 分类处理错误
-            if (error.code === 'ECONNRESET') {
-                console.log('连接被重置，可能是服务器限制');
-                if (retry < 2) {
-                    await sleep(10000);
-                    continue;
-                }
-                return `帐号${index + 1}签到失败: 连接被重置`;
-            } else if (error.code === 'ETIMEDOUT') {
-                console.log('连接超时');
-                if (retry < 2) {
-                    await sleep(10000);
-                    continue;
-                }
-                return `帐号${index + 1}签到失败: 连接超时`;
-            } else if (error.response) {
+            if (error.response) {
                 // 服务器响应了错误状态码
-                console.log(`服务器响应错误: ${error.response.status}`);
-                if (retry < 2 && error.response.status >= 500) {
+                console.log(`服务器响应: ${error.response.status}`, error.response.data);
+                if (error.response.status >= 500 && retry < 2) {
                     await sleep(8000);
                     continue;
                 }
                 return `帐号${index + 1}签到失败: HTTP ${error.response.status}`;
-            } else if (error.request) {
-                // 请求发送但没有收到响应
-                console.log('未收到服务器响应');
+            } else if (error.code) {
+                console.log(`错误代码: ${error.code}`);
                 if (retry < 2) {
                     await sleep(10000);
                     continue;
                 }
-                return `帐号${index + 1}签到失败: 无响应`;
+                return `帐号${index + 1}签到失败: ${error.code}`;
             } else {
-                // 其他错误
-                console.log('其他错误:', error.message);
                 if (retry < 2) {
                     await sleep(5000);
                     continue;
@@ -204,13 +165,22 @@ async function signAccount(deviceParams, token, index) {
 
 // 主函数
 async function main() {
-    console.log(`共配置了${ydwx_deviceParams.length}个账号`);
+    console.log('🚀 开始一点万象签到任务');
+    console.log(`📱 共配置了${ydwx_deviceParams.length}个账号`);
+    
     const log = [];
     let lastMsg = "未知状态";
 
     try {
+        // 先测试连通性
+        const instance = createAxiosInstance();
+        await testServerConnectivity(instance);
+
         for (let i = 0; i < ydwx_deviceParams.length; i++) {
-            console.log(`\n*****第${i + 1}个账号*****`);
+            console.log(`\n${'='.repeat(40)}`);
+            console.log(`第${i + 1}个账号`);
+            console.log(`${'='.repeat(40)}`);
+            
             const result = await signAccount(ydwx_deviceParams[i], ydwx_token[i], i);
             log.push(result);
             
@@ -218,19 +188,16 @@ async function main() {
                 lastMsg = result.split("签到结果:")[1].trim();
             }
             
-            // 随机延迟（如果不是最后一个账号）
+            // 随机延迟
             if (i < ydwx_deviceParams.length - 1) {
-                const delay = Math.floor(Math.random() * (60 - 30 + 1)) + 30;
-                console.log(`等待${delay}秒后处理下一个账号...`);
+                const delay = Math.floor(Math.random() * 30) + 30;
+                console.log(`⏰ 等待${delay}秒后处理下一个账号...`);
                 await sleep(delay * 1000);
             }
         }
 
         const logText = log.join('\n');
-        console.log(`\n🎉 最终结果:\n${logText}`);
-        
-        // 发送通知（根据你的通知系统调整）
-        // await sendNotify('一点万象签到', logText);
+        console.log(`\n🎉 任务完成!\n${logText}`);
         
         return { 
             success: true, 
@@ -240,7 +207,7 @@ async function main() {
         };
         
     } catch (error) {
-        console.error('主程序执行失败:', error);
+        console.error('❌ 任务失败:', error);
         return {
             success: false,
             title: '一点万象签到失败',
