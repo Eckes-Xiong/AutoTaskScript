@@ -23,5 +23,5 @@ jobs:
       #     curl -X OPTIONS -v https://app.mixcapp.com/mixc/gateway
       - name: 测试代理连通性
         run: |
-          curl -x ${{ secrets.PROXY_URL }} -v https://app.mixcapp.com/mixc/gateway
+          curl -x https://jzcs-test.expowh.com -v https://app.mixcapp.com/mixc/gateway
         
