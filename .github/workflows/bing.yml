@@ -1,4 +1,4 @@
-name: 999.py
+name: bing.py
 
 on:
   schedule:
