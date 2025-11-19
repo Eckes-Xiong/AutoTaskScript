@@ -32,6 +32,9 @@ import crypto from "crypto";
 import moment from "moment";
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 // const xiangWanList = ["18908687553#ss123456","17786601235#a277141160","18963439553#ss123456"];
 const xiangWanList = ["18963439553#ss123456"];
 // 消息推送
