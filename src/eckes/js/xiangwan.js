@@ -30,9 +30,8 @@ import notification from "../utils/notification-kit.js";
 import common from "../utils/common.js";
 import crypto from "crypto";
 import moment from "moment";
-
-const fs = require('fs').promises;
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 // const xiangWanList = ["18908687553#ss123456","17786601235#a277141160","18963439553#ss123456"];
 const xiangWanList = ["18963439553#ss123456"];
 // 消息推送
