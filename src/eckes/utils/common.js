@@ -33,7 +33,7 @@ async function sendRequest(url, method, headers = {}, data = {}) {
 function getRandomWait(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 // ****************************************MD5****************************************
 /**
  * md5 encryption
@@ -204,5 +204,5 @@ function getRandomUserAgent(type = 'wx_mini') {
     return arrays[index];
 }
 
-const a =  {sendRequest, getRandomWait, md5, getRandomUserAgent};
+const a =  {wait, sendRequest, getRandomWait, md5, getRandomUserAgent};
 export default a
