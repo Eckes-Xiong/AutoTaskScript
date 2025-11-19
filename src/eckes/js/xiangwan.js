@@ -33,6 +33,7 @@ import moment from "moment";
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+const $ = {isLogin:false, name: 'APP'};
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 // const xiangWanList = ["18908687553#ss123456","17786601235#a277141160","18963439553#ss123456"];
@@ -75,12 +76,12 @@ let lastMsg = "err";
     }
     if (message) {
         await notification.pushMessage({
-          title: "原神签到" + name,
+          title: "享玩" + lastMsg,
           content: "结果:"+message,
           msgtype: "text"
-        }`${$.name}`+lastMsg, `${message}`);
+        });
     }
-})().catch((e) => $.logErr(e)).finally(() => $.done());
+})();
 
 async function main() {
     await sign();
