@@ -1,0 +1,134 @@
+name: 酒仙app.py
+
+on:
+  schedule:
+    - cron: '1 22,23 * * *'  # 每天 北京时间 7点1
+  workflow_dispatch:
+    inputs:
+      testMode:
+        description: '是否启用测试模式'
+        required: false
+        default: 'true'
+        type: boolean
+
+jobs:
+  run-python-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取仓库代码
+        uses: actions/checkout@v4
+
+      - name: 配置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+          cache: 'pip'
+          cache-dependency-path: 'src/eckes/python/requirements.txt'
+          
+      # 新增：设置全局环境变量绕过 SSL 验证
+      - name: 配置 SSL 绕过设置
+        run: |
+          # 设置 Python 不验证 SSL
+          echo "PYTHONWARNINGS=ignore:Unverified HTTPS request" >> $GITHUB_ENV
+          echo "CURL_CA_BUNDLE=" >> $GITHUB_ENV
+          echo "REQUESTS_CA_BUNDLE=" >> $GITHUB_ENV
+          echo "SSL_CERT_FILE=" >> $GITHUB_ENV
+
+      - name: 缓存 pip 依赖
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+            **/__pycache__
+          key: ${{ runner.os }}-pip-${{ hashFiles('src/eckes/python/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: 安装依赖
+        run: |
+          if [ -f "src/eckes/python/requirements.txt" ]; then
+            # 安装时临时禁用 SSL 验证
+            pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org -r src/eckes/python/requirements.txt
+          else
+            echo "无依赖文件，跳过安装"
+          fi
+
+      - name: 缓存脚本临时文件
+        uses: actions/cache@v3
+        with:
+          path: src/eckes/python/cache/
+          key: ${{ runner.os }}-script-cache-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-script-cache-
+
+      - name: 创建 SSL 绕过补丁文件
+        run: |
+          cd src/eckes/python/
+          # 创建补丁脚本
+          cat > ssl_patch.py << 'EOF'
+          import ssl
+          import urllib3
+          import requests
+          from requests.adapters import HTTPAdapter
+          
+          # 禁用 SSL 警告
+          urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+          
+          # 创建自定义 SSL 上下文
+          class CustomHTTPAdapter(HTTPAdapter):
+              def __init__(self, ssl_context=None, **kwargs):
+                  self.ssl_context = ssl_context
+                  super().__init__(**kwargs)
+              
+              def init_poolmanager(self, *args, **kwargs):
+                  if self.ssl_context:
+                      kwargs['ssl_context'] = self.ssl_context
+                  return super().init_poolmanager(*args, **kwargs)
+          
+          # 创建不验证 SSL 的上下文
+          ssl_context = ssl.create_default_context()
+          ssl_context.check_hostname = False
+          ssl_context.verify_mode = ssl.CERT_NONE
+          
+          # 创建全局 session
+          session = requests.Session()
+          adapter = CustomHTTPAdapter(ssl_context=ssl_context)
+          session.mount('https://', adapter)
+          session.mount('http://', adapter)
+          
+          # 替换默认的 requests 方法
+          original_get = requests.get
+          original_post = requests.post
+          
+          def patched_get(url, **kwargs):
+              kwargs.setdefault('verify', False)
+              return original_get(url, **kwargs)
+          
+          def patched_post(url, **kwargs):
+              kwargs.setdefault('verify', False)
+              return original_post(url, **kwargs)
+          
+          requests.get = patched_get
+          requests.post = patched_post
+          
+          print("SSL 补丁已应用：已禁用 SSL 验证")
+          EOF
+
+      - name: 执行 jiuxian.py
+        run: |
+          cd src/eckes/python/
+          # 先运行 SSL 补丁，然后运行主脚本
+          python -c "import ssl_patch; exec(open('jiuxian.py').read())"
+        env:
+          TEST_MODE: ${{ github.event.inputs.testMode }}
+          # 设置环境变量确保 SSL 验证被禁用
+          PYTHONHTTPSVERIFY: 0
+          CURL_CA_BUNDLE: ""
+          REQUESTS_CA_BUNDLE: ""
+
+      - name: 保存运行日志
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jiuxian-py-run-logs
+          path: src/eckes/python/output.log
