@@ -124,6 +124,13 @@ import sys
 from typing import Dict, List, Optional, Tuple
 import urllib3
 
+# 安全地获取当前文件路径
+if '__file__' in globals():
+    current_file = os.path.abspath(__file__)
+else:
+    # 当 __file__ 未定义时，使用 sys.argv[0]
+    current_file = os.path.abspath(sys.argv[0]) if sys.argv else os.getcwd()
+
 # 禁用SSL警告
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -202,7 +209,7 @@ class JiuxianConfig:
     # Token存储文件路径
     @staticmethod
     def get_token_file():
-        script_dir = os.path.dirname(os.path.abspath(__file__))
+        script_dir = os.path.dirname(current_file)
         return os.path.join(script_dir, "jiuxian_tokens.json")
 
 # Token管理器（保持不变）
