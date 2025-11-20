@@ -1,7 +1,7 @@
 import notification from "../utils/notification-kit.js";
 import common from "../utils/common.js";
-import Env from "../utils/env_plugin.js";
-const $ = new Env("米游社-原神签到");
+// import Env from "../utils/env_plugin.js";
+// const $ = new Env("米游社-原神签到");
 
 const timeout = 15000; //超时时间(单位毫秒)
 //const ck = process.env.MIHOYO_COOKIE;
