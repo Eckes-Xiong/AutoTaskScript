@@ -37,8 +37,8 @@ const $ = {isLogin:false, name: 'APP'};
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 let xiangWanList = ["18908687553#ss123456","17786601235#a277141160","18963439553#ss123456"];
-xiangWanList = ["18963439553#ss123456"];
-xiangWanList = ["18908687553#ss123456","17786601235#a277141160"];
+// xiangWanList = ["18963439553#ss123456"];
+// xiangWanList = ["18908687553#ss123456","17786601235#a277141160"];
 // 消息推送
 let message = '';
 // token 缓存地址
