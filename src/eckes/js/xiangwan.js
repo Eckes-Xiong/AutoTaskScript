@@ -99,20 +99,20 @@ async function main() {
  */
 async function login(account, password) {
     try {
-        let cachedToken = await getTokenFromCache("xiangwan", account);
-        if (cachedToken) {
-            headers.authorization = `Bearer ${cachedToken}`;
-            console.log('使用缓存 token 登录，验证中...');
-            const isValid = await validateToken(cachedToken);
-            await common.wait(common.getRandomWait(2e3, 3e3));
-            if (isValid) {
-                $.isLogin = true;
-                console.log('token 验证有效✅');
-                return;
-            } else {
-                console.log('缓存 token 验证失效，开始重新登录更新 token...');
-            }
-        }
+        // let cachedToken = await getTokenFromCache("xiangwan", account);
+        // if (cachedToken) {
+        //     headers.authorization = `Bearer ${cachedToken}`;
+        //     console.log('使用缓存 token 登录，验证中...');
+        //     const isValid = await validateToken(cachedToken);
+        //     await common.wait(common.getRandomWait(2e3, 3e3));
+        //     if (isValid) {
+        //         $.isLogin = true;
+        //         console.log('token 验证有效✅');
+        //         return;
+        //     } else {
+        //         console.log('缓存 token 验证失效，开始重新登录更新 token...');
+        //     }
+        // }
         const encryptData = await common.sendRequest(`${baseUrl}/account/account_login`, 'post', headers, {
             "params": encryptCredentials(JSON.stringify({
                 ...getCommonParams(),
