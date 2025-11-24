@@ -3,7 +3,7 @@ name: 享玩js
 on:
   workflow_dispatch:
   schedule:
-    - cron: "2 24 * * *"
+    - cron: "2 0 * * *"
 
 jobs:
   build:
