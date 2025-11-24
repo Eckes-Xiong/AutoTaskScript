@@ -129,7 +129,7 @@ async function login(account, password) {
         headers.authorization = `Bearer ${decryptData.data.token}`;
         $.isLogin = true;
         // 保存 token 到文件
-        await saveTokenToCache("xiangwan", account, decryptData.data.token);
+        // await saveTokenToCache("xiangwan", account, decryptData.data.token);
     } catch (e) {
         $.isLogin = false;
         if (e.response || e.response.data) {
