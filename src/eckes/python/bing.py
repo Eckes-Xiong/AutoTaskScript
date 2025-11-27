@@ -231,8 +231,8 @@ def bing_search_pc(cookies, account_index=None, email=None):
     url = "https://cn.bing.com/search"
     params = {
         "q": q,
-        "qs": "FT",
-        "form": "TSASDS"
+        "qs": "PN",
+        "form": "TSFLBL"
     }
 
     headers = {
