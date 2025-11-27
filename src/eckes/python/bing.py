@@ -847,6 +847,7 @@ def mark_pushed_today():
     save_used_words(used_words_data)
 
 def main():
+    return
     """主函数 - 支持多账号并发执行和推送"""
     all_summaries = []
     threads = []
@@ -902,4 +903,4 @@ def main():
         print_log("统一推送", "没有可供推送的账号信息。", None)
 
 if __name__ == "__main__":
-    main() 
+    main()
