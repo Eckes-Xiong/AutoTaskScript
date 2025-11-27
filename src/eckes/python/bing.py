@@ -659,7 +659,7 @@ def get_search_progress_sum(dashboard_data, search_type):
     return sum(task.get('pointProgress', 0) for task in search_tasks)
 
 def perform_search_tasks(search_type, search_func, cookies, account_index=None):
-    check_interval = 3 if search_type == "电脑搜索" else 1
+    check_interval = 2 if search_type == "电脑搜索" else 1
     print_log(search_type, f"{search_type} - 执行{check_interval}次搜索 ---", account_index)
     count = 0
     dashboard_result = get_dashboard_data(cookies, account_index)
@@ -669,7 +669,7 @@ def perform_search_tasks(search_type, search_func, cookies, account_index=None):
     for i in range(check_interval):
         count += 1
         if search_func(cookies, account_index):
-            delay = random.randint(40, 50)
+            delay = random.randint(20, 50)
             print_log(search_type, f"第 {count} 次{search_type}成功，等待 {delay} 秒...", account_index)
             time.sleep(delay)
         else:
