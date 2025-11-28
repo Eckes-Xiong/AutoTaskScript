@@ -847,7 +847,7 @@ def mark_pushed_today():
     save_used_words(used_words_data)
 
 def main():
-    # return
+    return
     """主函数 - 支持多账号并发执行和推送"""
     all_summaries = []
     threads = []
