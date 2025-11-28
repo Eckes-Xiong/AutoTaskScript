@@ -2,7 +2,7 @@ name: 酒仙app.py
 
 on:
   schedule:
-    - cron: '1 22,23 * * *'  # 每天 北京时间 7点1
+    - cron: '1 22 * * *'  # 每天 北京时间 7点1
   workflow_dispatch:
     inputs:
       testMode:
