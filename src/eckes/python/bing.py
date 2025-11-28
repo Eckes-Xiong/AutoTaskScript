@@ -659,7 +659,7 @@ def get_search_progress_sum(dashboard_data, search_type):
     return sum(task.get('pointProgress', 0) for task in search_tasks)
 
 def perform_search_tasks(search_type, search_func, cookies, account_index=None):
-    check_interval = 3 if search_type == "电脑搜索" else 1
+    check_interval = 3 if search_type == "电脑搜索" else 2
     print_log(search_type, f"{search_type} - 执行{check_interval}次搜索 ---", account_index)
     count = 0
     dashboard_result = get_dashboard_data(cookies, account_index)
@@ -847,7 +847,7 @@ def mark_pushed_today():
     save_used_words(used_words_data)
 
 def main():
-    return
+    # return
     """主函数 - 支持多账号并发执行和推送"""
     all_summaries = []
     threads = []
