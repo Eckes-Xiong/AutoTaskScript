@@ -529,7 +529,7 @@ class NongFuShanQuan:
 
 def main():
 
-    tokens = "9d0217f7-a735-4341-824d-8fb7f8bf0679&1c25f9c75be24f0db74dba486dc119a506b0f2790a3d4e1daf9dad21370d9d53"
+    tokens = "9d0217f7-a735-4341-824d-8fb7f8bf0679&67be2a468cf643aa91c616c14a965d7cd350a65bf6334cc4a973db5ead2c02bf"
 
     if not tokens:
         print("❌ 请设置环境变量 DD_nfsq")
