@@ -138,7 +138,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 class JiuxianConfig:
     # 应用基本信息
     APP_NAME = "酒仙"
-    VERSION = "9.2.13"
+    VERSION = "9.2.14"
     APP_KEY = "1ba8b341-5a56-49dc-8ee3-92b32db7fc21"
 
     # API接口
@@ -154,56 +154,70 @@ class JiuxianConfig:
 
     # 小程序设备信息
     MINI_PROGRAM_INFO = {
-        'appKey': '1ba8b341-5a56-49dc-8ee3-92b32db7fc21',
-        'appVersion': '9.2.12',
-        'apiVersion': '1.0',
-        'areaId': '2048',
-        'channelCode': '0, 1',
-        'appChannel': 'xiaochengxu',
-        'deviceType': 'XIAOCHENGXU',
-        'supportWebp': '2',
-        'longi': '115.80287868923611',
-        'lati': '28.155340440538193',
-        'screenReslolution': '412x915',
-        'sysVersion': 'Android 14'
+        "apiVersion": "1.0",
+        "appKey": "C688F5C3-1F27-4010-B33B-5ADAAFD60499",
+        "appVersion": "9.2.14",
+        "areaId": '1548',
+        "channelCode": [0, 1],
+        "cityName": "武汉市",
+        "consentStatus": '2',
+        "cpsId": "appstore",
+        "deviceIdentify": "C688F5C3-1F27-4010-B33B-5ADAAFD60499",
+        "deviceType": "IPHONE",
+        "deviceTypeExtra": '0',
+        "equipmentType": "iPhone",
+        "lati": '30.55036105685764',
+        "longi": '114.1999536132813',
+        "netEnv": "WIFI",
+        "pushToken": "3c17b95ad129da1ff9e52e5d7d829a37c0ac726368a550de4461e9ed527bc8e2",
+        "screenReslolution": "393.00x852.00",
+        "supportWebp": '1',
+        "sysVersion": "26.2",
+        "token": "7b7a7b0f156a4e2c82348955364a91a7211736053"
     }
 
     # APP设备信息
     APP_DEVICE_INFO = {
-        "appVersion": "9.2.13",
-        "areaId": "500",
-        "channelCode": "0", 
-        "cpsId": "xiaomi",
-        "deviceIdentify": "ad96ade2-b918-3e05-86b8-ba8c34747b0c",
-        "deviceType": "ANDROID",
-        "deviceTypeExtra": "0",
-        "equipmentType": "M2011K2C",
-        "netEnv": "wifi",
-        "screenReslolution": "1080x2297",
-        "supportWebp": "1",
-        "sysVersion": "14",
-        "appKey": "ad96ade2-b918-3e05-86b8-ba8c34747b0c"
+        "apiVersion": "1.0",
+        "appKey": "C688F5C3-1F27-4010-B33B-5ADAAFD60499",
+        "appVersion": "9.2.14",
+        "areaId": '1548',
+        "channelCode": [0, 1],
+        "cityName": "武汉市",
+        "consentStatus": '2',
+        "cpsId": "appstore",
+        "deviceIdentify": "C688F5C3-1F27-4010-B33B-5ADAAFD60499",
+        "deviceType": "IPHONE",
+        "deviceTypeExtra": '0',
+        "equipmentType": "iPhone",
+        "lati": '30.55036105685764',
+        "longi": '114.1999536132813',
+        "netEnv": "WIFI",
+        "pushToken": "3c17b95ad129da1ff9e52e5d7d829a37c0ac726368a550de4461e9ed527bc8e2",
+        "screenReslolution": "393.00x852.00",
+        "supportWebp": '1',
+        "sysVersion": "26.2",
+        "token": "7b7a7b0f156a4e2c82348955364a91a7211736053"
     }
 
     # 小程序请求头
     MINI_PROGRAM_HEADERS = {
         "Host": "newappuser.jiuxian.com",
-        "Connection": "keep-alive",
-        "content-type": "application/json",
-        "secure": "false",
-        "charset": "utf-8",
-        "Referer": "https://servicewechat.com/wx244a18142bb0c78a/144/page-frame.html",
-        "User-Agent": "Mozilla/5.0 (Linux; Android 14; M2011K2C Build/UKQ1.230804.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/138.0.7258.158 Mobile Safari/537.36 XWEB/1380267 MMWEBSDK/20250904 MMWEBID/6819 MicroMessenger/8.0.64.2940(0x2800403C) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android",
-        "Accept-Encoding": "gzip, deflate, br"
+        "Accept": "text/html; q=1.0, text/*; q=0.8, image/gif; q=0.6, image/jpeg; q=0.6, image/*; q=0.5, */*; q=0.1",
+        "User-Agent": "jiuxian/9.2.14 (iPhone; iOS 26.2; Scale/3.00)",
+        "Accept-Language": "zh-Hans-CN;q=1, ja-CN;q=0.9, en-CN;q=0.8",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
     }
 
     # APP请求头
     APP_HEADERS = {
-        "User-Agent": "okhttp/3.14.9",
-        "Content-Type": "application/x-www-form-urlencoded",
         "Host": "newappuser.jiuxian.com",
-        "Connection": "Keep-Alive",
-        "Accept-Encoding": "gzip"
+        "Accept": "text/html; q=1.0, text/*; q=0.8, image/gif; q=0.6, image/jpeg; q=0.6, image/*; q=0.5, */*; q=0.1",
+        "User-Agent": "jiuxian/9.2.14 (iPhone; iOS 26.2; Scale/3.00)",
+        "Accept-Language": "zh-Hans-CN;q=1, ja-CN;q=0.9, en-CN;q=0.8",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
     }
 
     # Token存储文件路径
@@ -389,9 +403,9 @@ class Jiuxian:
     def __init__(self, username: str = None, password: str = None):
         self.username = username
         self.password = password
-        self.token = None
-        self.uid = None
-        self.nickname = None
+        self.token = '7b7a7b0f156a4e2c82348955364a91a7211736053'
+        self.uid = 'jx_1000_ISME9754_211736053'
+        self.nickname = 'Eckes'
         self.task_token = None
         self.session = requests.Session()
         self.session.verify = False
@@ -528,25 +542,25 @@ class Jiuxian:
             return None
 
         try:
-            params = JiuxianConfig.MINI_PROGRAM_INFO.copy()
+            params = JiuxianConfig.APP_DEVICE_INFO.copy()
             params["token"] = self.token
 
-            params["equipmentType"] = json.dumps({
-                "deviceAbi": "arm64-v8a",
-                "benchmarkLevel": 33,
-                "cpuType": "Venus based on Qualcomm Technologies, Inc SM8350",
-                "system": "Android 14",
-                "memorySize": 11228,
-                "abi": "arm64-v8a",
-                "model": "M2011K2C",
-                "brand": "Xiaomi",
-                "platform": "android"
-            })
+            # params["equipmentType"] = json.dumps({
+            #     "deviceAbi": "arm64-v8a",
+            #     "benchmarkLevel": 33,
+            #     "cpuType": "Venus based on Qualcomm Technologies, Inc SM8350",
+            #     "system": "Android 14",
+            #     "memorySize": 11228,
+            #     "abi": "arm64-v8a",
+            #     "model": "M2011K2C",
+            #     "brand": "Xiaomi",
+            #     "platform": "android"
+            # })
 
             response = self.session.get(
                 JiuxianConfig.MEMBER_INFO_URL,
                 params=params,
-                headers=JiuxianConfig.MINI_PROGRAM_HEADERS,
+                headers=JiuxianConfig.APP_HEADERS,
                 timeout=30
             )
 
@@ -653,7 +667,7 @@ class Jiuxian:
             print(f"❌ 签到异常 ({phone_tail}): {str(e)}")
             return False, 0
 
-    def complete_browse_task_original(self, task_id: str, task_name: str) -> Tuple[bool, int]:
+    def complete_browse_task_original(self, task_id: str, task_name: str, task_url_param: str) -> Tuple[bool, int]:
         try:
             if not self.task_token:
                 phone_tail = self.get_phone_tail()
@@ -664,14 +678,19 @@ class Jiuxian:
             print(f"🔄 开始浏览任务 ({phone_tail}): {task_name}")
 
             headers = {
-                "User-Agent": "Mozilla/5.0 (Linux; Android 14; M2011K2C Build/UKQ1.230804.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/139.0.7258.158 Mobile Safari/537.36 jiuxianApp/9.2.13 from/ANDROID suptwebp/1 netEnv/wifi oadzApp lati/null long/null shopId/ areaId/500",
+                "Host": "shop.jiuxian.com",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Sec-Fetch-Site": "none",
+                "Connection": "keep-alive",
+                "Sec-Fetch-Mode": "navigate",
                 "Cookie": f"token={self.token}",
-                "Referer": "https://shop.jiuxian.com/",
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-                "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko)  from/iOS long/114.1999536132813 areaId/1548 jiuxianApp/9.2.14 suptwebp/2 lati/30.55036105685764 oadzApp",
+                "Accept-Language": "zh-CN,zh-Hans;q=0.9",
+                "Sec-Fetch-Dest": "document",
+                "Accept-Encoding": "gzip, deflate, br"
             }
 
-            task_url = f"https://shop.jiuxian.com/show/wap/act/viewShopActivity.htm?viewType=2&actId=7418&taskToken={self.task_token}&taskId={task_id}&token={self.token}"
+            task_url = f"https://shop.jiuxian.com/show/wap/act/viewShopActivity.htm?{task_url_param}&from=iOS&deeplink=1&flag=ios&suptwebp=2&taskToken={self.task_token}"
             browse_response = self.session.get(task_url, headers=headers, timeout=30)
             if browse_response.status_code != 200:
                 phone_tail = self.get_phone_tail()
@@ -692,6 +711,23 @@ class Jiuxian:
                 "Referer": task_url,
                 "X-Requested-With": "XMLHttpRequest",
                 "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            }
+            complete_headers = {
+                "Host": "shop.jiuxian.com",
+                "Accept": "*/*",
+                "X-Requested-With": "XMLHttpRequest",
+                "Sec-Fetch-Site": "same-origin",
+                "Accept-Language": "zh-CN,zh-Hans;q=0.9",
+                "Accept-Encoding": "gzip, deflate, br",
+                "Sec-Fetch-Mode": "cors",
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+                "Origin": "https://shop.jiuxian.com",
+                "Content-Length": '52',
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko)  from/iOS long/114.1999536132813 areaId/1548 jiuxianApp/9.2.14 suptwebp/2 lati/30.55036105685764 oadzApp",
+                "Referer": task_url,
+                "Connection": "keep-alive",
+                "Sec-Fetch-Dest": "empty",
+                "Cookie": f"token={self.token}",
             }
 
             data = {
@@ -771,16 +807,21 @@ class Jiuxian:
         phone_tail = self.get_phone_tail()
         print(f"\n🎯 开始执行指定浏览任务 ({phone_tail})")
 
-        all_task_ids = list(range(1, 15))
+        # all_task_ids = list(range(1, 15))
+        # all_task_ids = [10, 11, 14, 17]
+        # all_task_url = ['countDown=15&goldNum=20&taskType=1&viewType=1&actId=7041&taskId=10', 'countDown=15&goldNum=20&taskType=1&viewType=2&actId=3820&taskId=11', 'countDown=15&goldNum=20&taskType=2&viewType=2&actId=7255&taskId=14', 'countDown=15&goldNum=50&taskType=1&viewType=2&actId=7436&taskId=17']
+        all_task_ids = [11, 14, 17]
+        all_task_url = ['countDown=15&goldNum=20&taskType=1&viewType=2&actId=3820&taskId=11', 'countDown=15&goldNum=20&taskType=2&viewType=2&actId=7255&taskId=14', 'countDown=15&goldNum=50&taskType=1&viewType=2&actId=7436&taskId=17']
         # 如果只想运行正常任务列表内的4个任务，将上面一行改行all_task_ids = [10, 11, 12, 14]
         total_gold = 0
         success_count = 0
 
-        for task_id in all_task_ids:
+        for index, task_id in enumerate(all_task_ids):
             task_name = self.get_task_name_by_id(str(task_id))
-            print(f"🔄 尝试执行{task_name} (ID:{task_id}) ({phone_tail})...")
+            task_url_param = all_task_url[index]
+            print(f"🔄 尝试执行{task_name} (ID:{task_id}) ({phone_tail}), url:({task_url_param})...")
 
-            success, gold = self.complete_browse_task_original(str(task_id), task_name)
+            success, gold = self.complete_browse_task_original(str(task_id), task_name, task_url_param)
             if success:
                 success_count += 1
                 total_gold += gold
@@ -832,9 +873,9 @@ class Jiuxian:
 
         # 1. 登录
         print(f"🔐 登录账号 ({phone_tail})...")
-        if not self.smart_login():
-            print(f"❌ 登录失败 ({phone_tail})")
-            return results
+        # if not self.smart_login():
+        #     print(f"❌ 登录失败 ({phone_tail})")
+        #     return results
         results['login_success'] = True
         results['nickname'] = self.nickname
 
