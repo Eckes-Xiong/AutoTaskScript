@@ -666,7 +666,6 @@ class Jiuxian:
             phone_tail = self.get_phone_tail()
             print(f"❌ 签到异常 ({phone_tail}): {str(e)}")
             return False, 0
-
     def complete_browse_task_original(self, task_id: str, task_name: str, task_url_param: str) -> Tuple[bool, int]:
         try:
             if not self.task_token:
@@ -808,10 +807,10 @@ class Jiuxian:
         print(f"\n🎯 开始执行指定浏览任务 ({phone_tail})")
 
         # all_task_ids = list(range(1, 15))
-        # all_task_ids = [10, 11, 14, 17]
-        # all_task_url = ['countDown=15&goldNum=20&taskType=1&viewType=1&actId=7041&taskId=10', 'countDown=15&goldNum=20&taskType=1&viewType=2&actId=3820&taskId=11', 'countDown=15&goldNum=20&taskType=2&viewType=2&actId=7255&taskId=14', 'countDown=15&goldNum=50&taskType=1&viewType=2&actId=7436&taskId=17']
-        all_task_ids = [11, 14, 17]
-        all_task_url = ['countDown=15&goldNum=20&taskType=1&viewType=2&actId=3820&taskId=11', 'countDown=15&goldNum=20&taskType=2&viewType=2&actId=7255&taskId=14', 'countDown=15&goldNum=50&taskType=1&viewType=2&actId=7436&taskId=17']
+        all_task_ids = [10, 11, 14, 17, 12]
+        all_task_url = ['countDown=15&goldNum=20&taskType=1&viewType=1&actId=7041&taskId=10', 'countDown=15&goldNum=20&taskType=1&viewType=2&actId=3820&taskId=11', 'countDown=15&goldNum=20&taskType=2&viewType=2&actId=7255&taskId=14', 'countDown=15&goldNum=50&taskType=1&viewType=2&actId=7436&taskId=17', 'taskType=2&viewType=2&actId=7418&taskId=12']
+        # all_task_ids = [11, 14, 17]
+        # all_task_url = ['countDown=15&goldNum=20&taskType=1&viewType=2&actId=3820&taskId=11', 'countDown=15&goldNum=20&taskType=2&viewType=2&actId=7255&taskId=14', 'countDown=15&goldNum=50&taskType=1&viewType=2&actId=7436&taskId=17']
         # 如果只想运行正常任务列表内的4个任务，将上面一行改行all_task_ids = [10, 11, 12, 14]
         total_gold = 0
         success_count = 0
