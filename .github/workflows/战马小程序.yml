@@ -114,7 +114,7 @@ jobs:
           print("SSL 补丁已应用：已禁用 SSL 验证")
           EOF
 
-      - name: 执行 jiuxian.py
+      - name: 执行 zhanma.py
         run: |
           cd src/eckes/python/
           # 先运行 SSL 补丁，然后运行主脚本
