@@ -19,6 +19,19 @@ import time
 import json
 import re
 import warnings
+# 青龙推送模块
+class QLNotifier:
+    @staticmethod
+    def send(title: str, content: str):
+        try:
+            from notify import send as ql_send
+            ql_send(title, content)
+            print(f"✅ 青龙通知发送成功: {title}")
+        except ImportError:
+            print(f"📢 {title}")
+            print(f"📝 {content}")
+        except Exception as e:
+            print(f"❌ 发送通知异常: {str(e)}")
 
 if sys.platform == 'win32':
     import io
@@ -95,10 +108,12 @@ def check_status(data, success_msg="成功", fail_msg="失败"):
     print_result(data.get("msg", fail_msg) if data else fail_msg)
     return False
 
-def get_score(safe):
+def get_score(safe, num):
     data = api("getusercenter", f"safe={safe}")
     if data and data.get("status") == 1:
         print_result(f"当前积分：{data['nowscore']}")
+        if num == 1:
+            QLNotifier.send("战马小程序", f"当前积分：{data['nowscore']}")
     else:
         print_error("获取积分失败")
 
@@ -165,7 +180,7 @@ def process_account(safe):
         run_all_tasks(safe)
         time.sleep(3)
         print_info("任务执行完成，获取最终积分...")
-        get_score(safe)
+        get_score(safe, 1)
         print_task("🎉 领取额外奖励")
         claim_help_feed(safe)
     except Exception as e:
