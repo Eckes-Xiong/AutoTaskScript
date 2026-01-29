@@ -108,7 +108,7 @@ def check_status(data, success_msg="成功", fail_msg="失败"):
     print_result(data.get("msg", fail_msg) if data else fail_msg)
     return False
 
-def get_score(safe, num):
+def get_score(safe, num=0):
     data = api("getusercenter", f"safe={safe}")
     if data and data.get("status") == 1:
         print_result(f"当前积分：{data['nowscore']}")
