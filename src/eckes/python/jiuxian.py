@@ -908,20 +908,20 @@ class Jiuxian:
 
         # 5. 抽奖任务
         print(f"🎰 运行抽奖任务 ({phone_tail})...")
-        lottery_status, lottery_prize = self.run_lottery_task()
-        results['lottery_status'] = lottery_status
-        results['lottery_prize'] = lottery_prize
+        # lottery_status, lottery_prize = self.run_lottery_task()
+        results['lottery_status'] = "不抽奖" # lottery_status
+        results['lottery_prize'] = "不抽奖" # lottery_prize
 
         # 6. 连续签到额外抽奖
-        seventh_lottery_prize = ""
-        if self.continuous_sign_days >= 7:
-            print(f"🎉 连续签到{self.continuous_sign_days}天，执行额外抽奖 ({phone_tail})...")
-            seventh_lottery_prize = self.run_seventh_day_lottery()
-            if seventh_lottery_prize and seventh_lottery_prize != "已抽过":
-                if results['lottery_prize'] and results['lottery_prize'] != "未执行":
-                    results['lottery_prize'] = f"{results['lottery_prize']}, {seventh_lottery_prize}"
-                else:
-                    results['lottery_prize'] = seventh_lottery_prize
+        # seventh_lottery_prize = ""
+        # if self.continuous_sign_days >= 7:
+        #     print(f"🎉 连续签到{self.continuous_sign_days}天，执行额外抽奖 ({phone_tail})...")
+        #     seventh_lottery_prize = self.run_seventh_day_lottery()
+        #     if seventh_lottery_prize and seventh_lottery_prize != "已抽过":
+        #         if results['lottery_prize'] and results['lottery_prize'] != "未执行":
+        #             results['lottery_prize'] = f"{results['lottery_prize']}, {seventh_lottery_prize}"
+        #         else:
+        #             results['lottery_prize'] = seventh_lottery_prize
 
         # 7. 更新信息
         updated_member_info = self.get_member_info()
@@ -935,7 +935,7 @@ class Jiuxian:
         print(f"💰 签到金币: {results['sign_gold']}")
         print(f"📅 连续签到: {results['continuous_days']} 天")
         print(f"🎯 浏览任务金币: {results['all_possible_tasks_gold']}")
-        print(f"🎰 抽奖: {results['lottery_status']} - {results['lottery_prize']}")
+        # print(f"🎰 抽奖: {results['lottery_status']} - {results['lottery_prize']}")
         print(f"💰 今日获得: {results['today_gold']} 金币")
         print(f"💰 当前总金币: {results['total_gold']}")
 
@@ -1045,7 +1045,7 @@ class JiuxianBatchRunner:
         self.print_summary()
 
         report_content = self.generate_report_content()
-        title = f"🍷 酒仙网任务报告 - {self.success_accounts}/{self.total_accounts}成功"
+        title = f"🍷 酒仙 - {self.success_accounts}/{self.total_accounts}成功"
         QLNotifier.send(title, report_content)
 
     def print_summary(self):
