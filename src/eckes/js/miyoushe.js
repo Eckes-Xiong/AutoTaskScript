@@ -31,7 +31,7 @@ async function mihoyo_sign(i) {
 
   await new Promise( async (resolve) => {
     try {
-      const res = await common.sendRequest(url, "post", {
+      const data = await common.sendRequest(url, "post", {
         'Content-Type': 'application/json;charset=utf-8',
         'Host': 'api-takumi.mihoyo.com',
         'Referer': 'https://act.mihoyo.com/',
@@ -45,12 +45,15 @@ async function mihoyo_sign(i) {
         ...hs[i],
       },jsons[i])
 
-      let data = res.data;
-      console.log('success',res);
+      console.log('success',data, typeof data);
 
-      data = JSON.parse(data);
+      if(typeof data === 'string'){
+          data = JSON.parse(data);
+      }
+        
       if (data.message === "OK") {
         send_str += `${i+1}:成功。`
+        title_str += `${i+1};`
       } else {
         send_str += `${i+1}:失败。`
         title_str += `${i+1}x;`
