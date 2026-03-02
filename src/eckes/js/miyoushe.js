@@ -62,7 +62,7 @@ async function mihoyo_sign(i) {
       },jsons[i])
 
       let data = res.data;
-
+      console.log('success',data);
       if (err) {
         console.log('调用API失败！！\n');
       } else {
@@ -76,6 +76,7 @@ async function mihoyo_sign(i) {
         resolve();
       }
     } catch (e) {
+      console.log('error', e)
       send_str += `${i+1}:✖。`
       title_str += `${i+1}x;`
     } finally {
@@ -88,7 +89,7 @@ async function mihoyo_sign(i) {
 }
 
 for(let i=0; i<hs.length; i++){
-    mihoyo_sign(i)
+   mihoyo_sign(i)
 }
 
 setTimeout(() => {
