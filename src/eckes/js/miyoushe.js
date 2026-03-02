@@ -10,7 +10,7 @@ const url = `https://api-takumi.mihoyo.com/event/luna/hk4e/sign`;
 
 const jsons = [
     {"act_id":"e202311201442471","region":"cn_gf01","uid":"100631479","lang":"zh-cn"},
-    {"act_id":"e202311201442471","region":"cn_gf01","uid":"134556687","lang":"zh-cn"},
+    //{"act_id":"e202311201442471","region":"cn_gf01","uid":"134556687","lang":"zh-cn"},
 ]
 const hs = [
     {
