@@ -46,7 +46,7 @@ async function mihoyo_sign(){
     try{
         for(let i=0; i<hs.length; i++){
            const res = await sendSign(i)
-            if (data.message === "OK") {
+            if (res.message === "OK") {
                 send_str += `${i+1}:成功。`
                 title_str += `${i+1};`
             } else {
