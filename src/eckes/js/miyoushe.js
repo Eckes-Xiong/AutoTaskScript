@@ -27,11 +27,8 @@ const hs = [
 let send_str = "";
 let title_str = "";
 
-async function mihoyo_sign(i) {
-
-  await new Promise( async (resolve) => {
-    try {
-      const data = await common.sendRequest(url, "post", {
+function sendSign(i){
+    return common.sendRequest(url, "post", {
         'Content-Type': 'application/json;charset=utf-8',
         'Host': 'api-takumi.mihoyo.com',
         'Referer': 'https://act.mihoyo.com/',
@@ -43,43 +40,32 @@ async function mihoyo_sign(i) {
         'x-rpc-client_type': '5',
         'Sec-Fetch-Mode': 'cors',
         ...hs[i],
-      },jsons[i])
-
-      console.log('success',data, typeof data);
-
-      if(typeof data === 'string'){
-          data = JSON.parse(data);
-      }
-        
-      if (data.message === "OK") {
-        send_str += `${i+1}:成功。`
-        title_str += `${i+1};`
-      } else {
-        send_str += `${i+1}:失败。`
-        title_str += `${i+1}x;`
-      }
-      resolve();
-    } catch (e) {
-      console.log('error', e)
-      send_str += `${i+1}:✖。`
-      title_str += `${i+1}x;`
-    } finally {
-      resolve();
+    },jsons[i]) 
+}
+async function mihoyo_sign(){
+    try{
+        for(let i=0; i<hs.length; i++){
+           const res = await sendSign(i)
+            if (data.message === "OK") {
+                send_str += `${i+1}:成功。`
+                title_str += `${i+1};`
+            } else {
+                send_str += `${i+1}:失败。`
+                title_str += `${i+1}x;`
+            }
+        }
+        notification.pushMessage({
+            title: "原神签到" + title_str,
+            content: "结果:"+send_str,
+            msgtype: "text"
+        });
+    }catch(e){
+        console.log(e);
+        notification.pushMessage({
+            title: "原神签到失败",
+            content: "结果:"+e,
+            msgtype: "text"
+        });
     }
-  });
-
-  await new Promise(resolve => setTimeout(resolve, Math.random()*12000*(i+1)));
-
 }
-
-for(let i=0; i<hs.length; i++){
-   mihoyo_sign(i)
-}
-
-setTimeout(() => {
-  notification.pushMessage({
-    title: "原神签到" + title_str,
-    content: "结果:"+send_str,
-    msgtype: "text"
-  });
-}, 40);
+mihoyo_sign()
