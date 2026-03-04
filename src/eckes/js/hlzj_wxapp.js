@@ -162,6 +162,7 @@ async function getTodayWater() {
         const data = await common.sendRequest(`${baseUrl}/server/api/user/get-today-water`, 'post', headers);
         if (200 !== data.code) {
             message += `今日电力奖励已领取！\n`;
+            console.log("200 !== data.code",data)
             console.error(`领取今日电力奖励失败：${data.message}`);
             return;
         }
