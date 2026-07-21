@@ -37,7 +37,7 @@ function createAxiosInstance() {
             'Connection': 'keep-alive',
             'Accept': 'application/json, text/plain, */*',
             'Origin': 'https://app.mixcapp.com',
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; PCAM00 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.92 Mobile Safari/537.36/MIXCAPP/3.42.2/AnalysysAgent/Hybrid',
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1',
             'Content-Type': 'application/x-www-form-urlencoded',
             'X-Requested-With': 'com.crland.mixc',
             'Referer': 'https://app.mixcapp.com/m/m-20014/signIn?showWebNavigation=true&appVersion=3.53.0&mallNo=20014',
