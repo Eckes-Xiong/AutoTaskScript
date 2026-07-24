@@ -140,7 +140,7 @@ async function doTask() {
         }
         const tasks = data.data.jobs;
         for (const item of tasks) {
-            if (['004', '006'].includes(item.id)) {
+            if (['004', '006', '005'].includes(item.id)) {
                 console.log(`\n跳过【${item.title}】`);
                 continue;
             }
@@ -167,12 +167,12 @@ async function doTask() {
                     case '007': // 分享
                         await commonTask(item.id, item.title);
                         break;
-                    case '005':
-                        // 收藏
-                        await favorArticle(articleId);
-                        await common.wait(common.getRandomWait(5e3, 8e3));
+                    // case '005':
+                    //     // 收藏
+                    //     await favorArticle(articleId);
+                    //     await common.wait(common.getRandomWait(5e3, 8e3));
 
-                        break;
+                    //     break;
                     default:
                         console.log(`其它任务：${item.title}`);
                         break;

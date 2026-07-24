@@ -39,7 +39,7 @@ if sys.platform == 'win32':
 
 warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 
-BASE_URL = "https://m.wxx.ball.warhorsechina.jsinfo.org.cn/app/api/custom"
+BASE_URL = "https://warhorsechina.cojoy.com.cn/app/api/custom"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 MicroMessenger/7.0.20.1781(0x6700143B) NetType/WIFI MiniProgramEnv/Windows WindowsWechat/WMPF WindowsWechat(0x63090a13) UnifiedPCWindowsWechat(0xf254162e) XWEB/18163"
 REFERER = "https://servicewechat.com/wx94dca6ef07a54c55/178/page-frame.html"
 SIGNATURE = "NfG0nHnYVDsK08J9vAutFdw6CBaffysWAnqmYwkGazfnQKpgvGsOsHFZg9rr"
